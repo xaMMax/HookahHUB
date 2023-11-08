@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+        <link rel="stylesheet" href=" {{url_for('static', filename='/stylesheets/styles.css') }}">
+        <title>LogIn page</title>
+    </head>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <body>
+        <main class="main">
+
+            <header class="main-header">
+                <div class="theme-button-div">
+                    <button id="theme-toggle"></button>
+                    <script src=" {{url_for('static', filename='/script/script.js') }}"></script>
+                </div>
+                <div class="h1-header-div">
+                    <h1 class="h1-header">
+                        Hookah in your brain
+                    </h1>
+                </div>
+            </header>
+
+            <div class="central-div">
+                <h2 class="h2-div">Log In</h2>
+
+                <div id='hideMe'>
+                    {% if error %}
+                    <p class=error> {{ error }}
+                    {% endif %}
+                </div>
+
+                <form action="{{ url_for('login') }}" method="post">
+                    <label for="login"></label>
+                    <input class="label" type="text" id="login" name="login" placeholder="login"><br>
+                    <label for="password"></label>
+                    <input class="label" type="password" id="password" name="password" placeholder="password"><br>
+
+                    <button class="button" style="vertical-align:middle">
+                        <span>Log In</span>
+                    </button>
+                </form>
+            </div>
+
+            <footer class="footer-div">
+                <div class="footer-div-text">
+                    <p class="p-text">MAX Studio 2023</p>
+                </div>
+            </footer>
+        </main>
+    </body>
+</html>
