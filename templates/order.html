@@ -4,15 +4,17 @@
         <meta charset="UTF-8">
         <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
         <link rel="stylesheet" href="/static/stylesheets/styles.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
         <title>Order page</title>
     </head>
     <body>
         <main class="order-main">
-
             <header class="main-header">
                 <div class="theme-button-div">
                     <button id="theme-toggle"></button>
-                    <script src="/static/script/script.js"></script>
+                    <script src="/static/script/theme.js"></script>
                 </div>
                 <div class="h1-header-div">
                     <h1 class="h1-header">
@@ -24,23 +26,14 @@
                 </div>
             </header>
 
-                {% for order in orders %}
-                    <div class="order-div">
 
-                        <h5>Order number: {{ order[2] }}</h5>
-                                <li><b>Ім'я:</b>{{ order[1] }}</li>
-                                <li>Міцність: {{ order[3] }}</li>
-                                <li>Смак 1: {{ order[4] }}</li>
-                                <li>Смак 2: {{ order[5] }}</li>
-                                <li>Смак 3: {{ order[6] }}</li>
-                    </div>
-                {% endfor %}
-
-
+            <div id="cnt" class="cnt">
+                <script type="" src=" {{url_for('static', filename='/script/get_data.js') }}"></script>
+            </div>
             <footer class="footer-div">
                 <div>
-                    <p class="p-text">MAX Studio 2023</p>
-                </div>
+                <p class="p-text">MAX Studio 2023</p>
+            </div>
             </footer>
         </main>
     </body>

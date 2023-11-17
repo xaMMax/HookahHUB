@@ -5,7 +5,7 @@ from datetime import datetime
 from aiogram import types, Dispatcher
 import asyncio
 
-from main import db
+from main import db, main_page
 from tg_bot.keyboards.callback_data import strength_callback
 from tg_bot.keyboards.inline import strength_menu, taste_menu, order_end
 
@@ -119,7 +119,8 @@ async def taste_menu_callback_user(call: types.CallbackQuery):
 async def end_menu_callback_user(call: types.CallbackQuery):
     user_name = call.from_user.full_name
     user_id = str(call.from_user.id)
-    order_name = 'order ' + user_id
+    order_name = 'order ' + user_id[0:3]
+    print(order_name)
 
     #Open the json file
     with open(f'static/orders/{user_id}.json', 'r') as json_file:
@@ -144,6 +145,7 @@ async def end_menu_callback_user(call: types.CallbackQuery):
         second_taste_choice=order[user_id]['second_taste_choice'],
         third_taste_choice=order[user_id]['third_taste_choice']
     )
+    # main_page()
 
 def register_user_start(dp: Dispatcher):
     dp.register_message_handler(start_user, commands=["start"])

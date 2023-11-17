@@ -1,19 +1,20 @@
 html {
-    display: flex
-    width: 1280px;
-    height: 800px;
+    display:block;
+    width: 100%;
+    height: auto;
     font-family: Montserrat;
 }
 /* Light theme */
 :root {
     --background-color: #090E1E;
-    --text-color: #163164;
-    --background-header: linear-gradient(180deg, #FB993F 0%, rgba(217, 217, 217, 0.00) 100%);
-    --background-footer: linear-gradient(0deg, #FB993F 0%, rgba(217, 217, 217, 0.00) 100%);
-    --background-main: #817F7D;
-    --background-form: linear-gradient(180deg, rgba(217, 217, 217, 0.46) 0%, #FFD596 100%);
+    --text-color: #d4d4d4;
+    --background-header: linear-gradient(180deg, #593716 0%, rgba(217, 217, 217, 0.00) 100%);
+    --background-footer: linear-gradient(0deg, #593716 0%, rgba(217, 217, 217, 0.00) 100%);
+    --background-main: rgba(217, 217, 217, 0.2) 0%;
+    --background-form: linear-gradient(180deg, rgba(36, 36, 36, 0.46) 0%, #643d02a1 100%);
     --background-image-button: url("/static/img/sun.png");
-    --background-color-button: transparent;
+    --background-image-logout: url("/static/img/logout.svg");
+    --background-color-button: rgba(32, 27, 27, 0.815) 0%;;
 }
 body {
     background-color: var(--background-color);
@@ -28,6 +29,8 @@ body {
     --background-main: #E7E7E7;
     --background-form: linear-gradient(180deg, rgba(255, 232, 150, 0.46) 0%, #FFD596 100%);
     --background-image-button: url("/static/img/moon.png");
+    --background-image-logout: url("/static/img/logout_white.svg");
+
     --background-color-button: transparent;
 }
 #theme-toggle {
@@ -37,11 +40,13 @@ body {
     background-image: var(--background-image-button);
     background-color: var(--background-color-button);
     background-repeat: no-repeat;
-    background-size: contain;
-    padding: 10px 10px 10px 10px;
+    background-size: 50px;
+    padding: 0px;
     margin-left: 12px;
     cursor: pointer;
+    background-position: center;
 }
+
 .main {
     width: 1000px;
     height: 100%;
@@ -67,8 +72,8 @@ body {
     flex-basis: 90%;
 }
 .theme-button-div{
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     flex-grow: 1;
     flex-shrink: 3;
     flex-basis: 10%;
@@ -82,11 +87,12 @@ body {
     flex-basis: 10%;
     margin: 16px;
     display: inline-block;
-    background-image: url("/static/img/logout.svg");
+    background-image: var(--background-image-logout);
     background-position: center;
     background-color: transparent;
     padding: 4px;
     border-radius: 8px;
+    cursor: pointer;
 }
 .h1-header{
     font-size: 24px;
@@ -117,16 +123,28 @@ body {
     margin-right: auto;
     background: var(--background-main);
 }
+.cnt{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-flow: row wrap;
+
+
+}
 .order-div{
     width: 260px;
-    height: 240px;
+    height: auto;
 
 
 
     margin: 12px 12px 12px 12px;
     border-radius: 16px;
     background: var(--background-form);
-    padding: 8px 24px 8px 24px;
+    padding: 8px 24px 24px 24px;
+}
+h5{
+    padding: 8px;
+    margin: 0px;
 }
 @media (max-width: 800px) {
   .order-div {
@@ -207,7 +225,7 @@ p {
     margin-top: 0px;
 }
 li{
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
