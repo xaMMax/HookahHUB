@@ -134,9 +134,6 @@ body {
 .order-div{
     width: 260px;
     height: auto;
-
-
-
     margin: 12px 12px 12px 12px;
     border-radius: 16px;
     background: var(--background-form);
@@ -260,4 +257,31 @@ li{
         height:0;
         visibility:hidden;
     }
+}
+
+.delete_btn, .confirm_btn{
+    padding: 8px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.delete_btn {
+    background-color: #ff6f00f0;
+    color: rgb(235, 235, 235);
+
+   
+}
+.confirm_btn {
+    background-color: #08eb4fb1;
+    color: rgb(235, 235, 235);
+
+}
+#duttonsDiv{
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
 }

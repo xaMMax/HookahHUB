@@ -1,14 +1,39 @@
 // Використовуємо цей масив, щоб пам'ятати уже відображені order numbers
 let displayedOrders = new Set();
-let orders_div = document.getElementById("cnt")
+let orders_div = document.getElementById("cnt");
+
+
 
 
 
 // Функція для створення HTML карти замовлення
 function createOrderCard(data) {
+    // console.log(data[0])
     // console.log(data)
-    var order = document.createElement("div")
-    order.setAttribute("class", "order-div")
+    var order = document.createElement("div");
+    order.setAttribute("id", "order-div" + data[0])
+    order.setAttribute("class", "order-div");
+    var buttonsDiv = document.createElement("div");
+    buttonsDiv.setAttribute("id", "duttonsDiv");
+
+    var deleteButton = document.createElement("button");
+    deleteButton.name = "Delete";
+    deleteButton.innerHTML = "Delete";
+    deleteButton.setAttribute("id", "delete_btn" + data[0]);
+    deleteButton.setAttribute("class", "delete_btn")
+
+    var confirmButton = document.createElement("button");
+    confirmButton.name = "Confirm";
+    confirmButton.innerHTML = "Confirm";
+    confirmButton.setAttribute("id", "confirm_btn" + data[0]);
+    confirmButton.setAttribute("class", "confirm_btn")
+
+    // var buttonsDiv = new buttonsDiv;
+    var buttonsList = [deleteButton, confirmButton];
+    for (item of buttonsList){
+        buttonsDiv.appendChild(item)
+    };
+
 
     var order_header = document.createElement("h5");
     order_header.innerHTML = "id замовлення: " + data[2];
@@ -23,16 +48,32 @@ function createOrderCard(data) {
     var flavor3 = document.createElement("li");
     flavor3.innerHTML = "Додатковий смак 2: <b>" + data[6] +"</b>";
 
-    var list = [order_header, name, strength, flavor1, flavor2, flavor3];
+    var list = [order_header, name, strength, flavor1, flavor2, flavor3, buttonsDiv];
 
     var container = orders_div.appendChild(order)
 
     for (item of list){
         container.appendChild(item)
     }
-
-    // console.log(content_container.console)
+    var hideButtonOnclick = document.getElementById("delete_btn" + data[0]);
+    hideButtonOnclick.addEventListener("click", function hide(id) {
+        const hideBtnId = document.getElementById("delete_btn" + data[0]);
+        var buttonIdSlise = id.target.id.slice(-2);
+        var oredrIdSlise = order.id.slice(-2);
+        console.log(buttonIdSlise, oredrIdSlise);
+        order.style.display="none";       
+    });
+    var confirmButtonOnclick = document.getElementById("confirm_btn" + data[0]);
+    confirmButtonOnclick.addEventListener("click", function hide(id) {
+        const confirmBtnId = document.getElementById("confirm_btn" + data[0]);
+        var buttonIdSlise = id.target.id.slice(-2);
+        var oredrIdSlise = order.id.slice(-2);
+        console.log(buttonIdSlise, oredrIdSlise);
+        order.style.backgroundColor = "rgba(69, 158, 0, 0.60)";       
+    });
     ;}
+
+
 
 // Функція для отримання замовлень з сервера
 function fetchOrders() {
@@ -54,7 +95,7 @@ function fetchOrders() {
         }).catch(console.error);
 }
 
-// Запускаємо функцію fetchOrders кожні 10 секунд
+// Запускаємо функцію fetchOrders кожні 5 секунд
 setInterval(fetchOrders, 5000);
 
 // Викликаємо функцію відразу при завантаженні сторінки
