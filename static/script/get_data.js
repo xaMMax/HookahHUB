@@ -61,15 +61,32 @@ function createOrderCard(data) {
         var buttonIdSlise = id.target.id.slice(-2);
         var oredrIdSlise = order.id.slice(-2);
         console.log(buttonIdSlise, oredrIdSlise);
-        order.style.display="none";       
+        order.style.display="none";
+        $.ajax({
+            type: 'POST',
+            url: '/order',
+            data: {'data': 'DELETED', 'orderID': parseInt(buttonIdSlise)},
+            dataType: 'json',
+//            error: function(req, err){ console.log('{data: was deleted}'); }
+        });
     });
     var confirmButtonOnclick = document.getElementById("confirm_btn" + data[0]);
-    confirmButtonOnclick.addEventListener("click", function hide(id) {
+    confirmButtonOnclick.addEventListener("click", function confirm(id) {
         const confirmBtnId = document.getElementById("confirm_btn" + data[0]);
         var buttonIdSlise = id.target.id.slice(-2);
         var oredrIdSlise = order.id.slice(-2);
         console.log(buttonIdSlise, oredrIdSlise);
-        order.style.backgroundColor = "rgba(69, 158, 0, 0.60)";       
+        order.style.backgroundColor = "rgba(69, 158, 0, 0.60)";
+
+        $.ajax({
+            type: 'POST',
+            url: '/order',
+            data: {'data': 'CONFIRMED', 'orderID': parseInt(buttonIdSlise)},
+            dataType: 'json',
+//            error: function(req, err){ console.log(buttonIdSlise); }
+        });
+
+
     });
     ;}
 
@@ -77,7 +94,7 @@ function createOrderCard(data) {
 
 // Функція для отримання замовлень з сервера
 function fetchOrders() {
-    fetch('api/get_orders') // Тут ваше посилання на API для отримання замовлень
+   fetch('api/get_orders') // Тут ваше посилання на API для отримання замовлень
         .then((response) => response.json())
         .then((orders) => {
             orders.forEach(order => {
@@ -95,8 +112,8 @@ function fetchOrders() {
         }).catch(console.error);
 }
 
-// Запускаємо функцію fetchOrders кожні 5 секунд
-setInterval(fetchOrders, 5000);
+// Запускаємо функцію fetchOrders кожні 10 секунд
+setInterval(fetchOrders, 10000);
 
 // Викликаємо функцію відразу при завантаженні сторінки
 fetchOrders();
