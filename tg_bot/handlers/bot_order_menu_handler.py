@@ -5,10 +5,11 @@ from datetime import datetime
 from aiogram import types, Dispatcher
 import asyncio
 
-from main import db, main_page
 from tg_bot.keyboards.callback_data import strength_callback
 from tg_bot.keyboards.inline import strength_menu, taste_menu, order_end
+from tg_bot.models.database_model import Database
 
+db = Database()
 
 async def start_user(message: types.Message):
     user_full_name = message.from_user.full_name
@@ -34,13 +35,13 @@ async def start_user(message: types.Message):
     #Delete exists filkenames
     try:
         os.remove(f'static/orders/{user_id}.json')
-        print(f'static/orders/{user_id}.json was deleted')
+        # print(f'static/orders/{user_id}.json was deleted')
     except OSError:
         pass
     #Open and save the json file
     with open(f'static/orders/{user_id}.json', 'w') as json_file:
         json.dump(order, json_file)
-        print("order was created, and dumped to a json file")
+        # print("order was created, and dumped to a json file")
 
 async def menu_callback_user(call: types.CallbackQuery):
     choice = call.data[7:]
@@ -57,17 +58,15 @@ async def menu_callback_user(call: types.CallbackQuery):
     #Open json file
     with open(f'static/orders/{user_id}.json', 'r+') as json_file:
         order = json.load(json_file)
-        print("json file was opened and loaded as just file")
-        print(order, type(order))
+        # print("json file was opened and loaded as just file")
+        # print(order, type(order))
         order[str(user_id)]['smoke_strength'] = choice
 
     #Save the json file
     with open(f'static/orders/{user_id}.json', 'r+') as json_file:
         json.dump(order, json_file)
-        print("json file was opened and dumped as json file")
-        print(order, type(order))
-
-
+        # print("json file was opened and dumped as json file")
+        # print(order, type(order))
 
 async def taste_menu_callback_user(call: types.CallbackQuery):
     choice = call.data[7:]
@@ -87,8 +86,8 @@ async def taste_menu_callback_user(call: types.CallbackQuery):
         # Save the json file
         with open(f'static/orders/{user_id}.json', 'r+') as json_file:
             json.dump(order, json_file)
-            print("json file was opened and dumped as json file")
-            print(order, type(order))
+            # print("json file was opened and dumped as json file")
+            # print(order, type(order))
 
     elif 'second_taste_choice' not in order[user_id]:
         await call.message.answer(
@@ -100,8 +99,8 @@ async def taste_menu_callback_user(call: types.CallbackQuery):
         # Save the json file
         with open(f'static/orders/{user_id}.json', 'r+') as json_file:
             json.dump(order, json_file)
-            print("json file was opened and dumped as json file")
-            print(order, type(order))
+            # print("json file was opened and dumped as json file")
+            # print(order, type(order))
 
     elif 'third_taste_choice' not in order[user_id]:
         await call.message.answer(
@@ -113,14 +112,14 @@ async def taste_menu_callback_user(call: types.CallbackQuery):
         # Save the json file
         with open(f'static/orders/{user_id}.json', 'r+') as json_file:
             json.dump(order, json_file)
-            print("json file was opened and dumped as json file")
-            print(order, type(order))
+            # print("json file was opened and dumped as json file")
+            # print(order, type(order))
 
 async def end_menu_callback_user(call: types.CallbackQuery):
     user_name = call.from_user.full_name
     user_id = str(call.from_user.id)
-    order_name = 'order ' + user_id[0:3]
-    print(order_name)
+    order_name = str(user_id)
+    # print(order_name)
 
     #Open the json file
     with open(f'static/orders/{user_id}.json', 'r') as json_file:
@@ -129,12 +128,15 @@ async def end_menu_callback_user(call: types.CallbackQuery):
         print(order, type(order))
 
     await call.message.delete()
-    await call.message.answer("Ви замовили:\n"
-                              f"Міцність: <b>{order[user_id]['smoke_strength']}</b>\n"
-                              f"Перший смак: <b>{order[user_id]['taste_choice']}</b>\n"
-                              f"Другий смак: <b>{order[user_id]['second_taste_choice']}</b>\n"
-                              f"Третій смак: <b>{order[user_id]['third_taste_choice']}</b>\n"
-                              f"Дякуємо за користання нашими послугами. Замовлення невдовзі буде виконано.")
+    # await call.message.answer("Ви замовили:\n"
+    #                           f"Міцність: <b>{order[user_id]['smoke_strength']}</b>\n"
+    #                           f"Перший смак: <b>{order[user_id]['taste_choice']}</b>\n"
+    #                           f"Другий смак: <b>{order[user_id]['second_taste_choice']}</b>\n"
+    #                           f"Третій смак: <b>{order[user_id]['third_taste_choice']}</b>\n"
+    #                           f"Дякуємо за користання нашими послугами. Замовлення невдовзі буде виконано.")
+    await call.message.answer("Ваше замовлення надіслано,\n "
+                              "дякуємо за користання нашими послугами.\n"
+                              " виконуємо....")
 
     #Save data from json to database table
     db.add_order(
@@ -145,7 +147,6 @@ async def end_menu_callback_user(call: types.CallbackQuery):
         second_taste_choice=order[user_id]['second_taste_choice'],
         third_taste_choice=order[user_id]['third_taste_choice']
     )
-    # main_page()
 
 def register_user_start(dp: Dispatcher):
     dp.register_message_handler(start_user, commands=["start"])
@@ -187,3 +188,6 @@ def register_end_menu_callback_user(dp: Dispatcher):
     dp.register_callback_query_handler(end_menu_callback_user,
                                        strength_callback.filter(grade="Закінчити замовлення"),
                                        state=None)
+
+# def register_empty_callback(dp: Dispatcher):
+#     dp.register_callback_query_handler(empty_callback, state=None,)

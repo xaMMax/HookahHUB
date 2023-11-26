@@ -9,12 +9,14 @@ from tg_bot.config import load_config
 from tg_bot.filters.admin import AdminFilter
 from tg_bot.filters.menu_one import MenuOne
 from tg_bot.handlers.admin import register_admin, register_menu_callback_admin, register_taste_menu_callback_admin
-from tg_bot.handlers.menu import register_menu_callback_user, register_taste_menu_callback_user, register_user_start, \
+from tg_bot.handlers.bot_order_menu_handler import register_menu_callback_user, register_taste_menu_callback_user, register_user_start, \
     register_end_menu_callback_user, register_own_choice_menu_callback_user
 from tg_bot.middlewares.db import DbMiddleware
-from main import db
+from tg_bot.models.database_model import Database
+
 
 loger = logging.getLogger(__name__)
+db = Database()
 
 
 def register_all_middlewares(dp):
@@ -36,7 +38,12 @@ def register_all_handlers(dp):
     register_taste_menu_callback_user(dp)
     register_end_menu_callback_user(dp)
     register_own_choice_menu_callback_user(dp)
+    # register_empty_callback(dp)
     pass
+
+
+config = load_config(".env")
+bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
 
 
 async def main():
@@ -44,9 +51,6 @@ async def main():
         level=logging.INFO,
         format=u'%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
     )
-    config = load_config(".env")
-
-    bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
     db.create_table_orders()
     dp = Dispatcher(bot, storage=storage)
@@ -62,7 +66,6 @@ async def main():
         await dp.storage.close()
         await dp.storage.wait_closed()
         await bot.session.close()
-
 
 
 if __name__ == '__main__':

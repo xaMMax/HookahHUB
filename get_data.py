@@ -1,3 +1,4 @@
+get_data_js_string = '''
 // Використовуємо цей масив, щоб пам'ятати уже відображені order numbers
 let displayedOrders = new Set();
 let orders_div = document.getElementById("cnt");
@@ -81,14 +82,7 @@ function createOrderCard(data) {
         $.ajax({
             type: 'POST',
             url: '/order',
-            data: {
-                'data': 'CONFIRMED', 
-                'orderID': parseInt(buttonIdSlise), 
-                'userID': data[2],
-                'strength': data[3],
-                'flavour': data[4],
-                'flavour1': data[5],
-                'flavour2': data[6]},
+            data: {'data': 'CONFIRMED', 'orderID': parseInt(buttonIdSlise), 'userID': data[2]},
             dataType: 'json',
 //            error: function(req, err){ console.log(buttonIdSlise); }
         });
@@ -118,7 +112,9 @@ function fetchOrders() {
 }
 
 // Запускаємо функцію fetchOrders кожні 10 секунд
- setInterval(fetchOrders, 10000);
+// setInterval(fetchOrders, 10000);
 
 // Викликаємо функцію відразу при завантаженні сторінки
 fetchOrders();
+
+'''

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-        <link rel="stylesheet" href=" {{url_for('static', filename='/stylesheets/styles.css') }}">
+        <link rel="stylesheet" href=" {{url_for('static', filename='stylesheets/styles.css') }}">
         <title>LogIn page</title>
     </head>
     {% with messages = get_flashed_messages() %}
@@ -21,7 +21,7 @@
             <header class="main-header">
                 <div class="theme-button-div">
                     <button id="theme-toggle"></button>
-                    <script type="" src=" {{url_for('static', filename='/script/theme.js') }}"></script>
+                    <script type="" src=" {{url_for('static', filename='script/theme.js') }}"></script>
                 </div>
                 <div class="h1-header-div">
                     <h1 class="h1-header">
