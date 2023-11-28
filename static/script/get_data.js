@@ -65,7 +65,14 @@ function createOrderCard(data) {
         $.ajax({
             type: 'POST',
             url: '/order',
-            data: {'data': 'DELETED', 'orderID': parseInt(buttonIdSlise)},
+                        data: {
+                'data': 'DELETED',
+                'orderID': data[0],
+                'userID': data[2],
+                'strength': data[3],
+                'flavour': data[4],
+                'flavour1': data[5],
+                'flavour2': data[6]},
             dataType: 'json',
 //            error: function(req, err){ console.log('{data: was deleted}'); }
         });
@@ -83,7 +90,7 @@ function createOrderCard(data) {
             url: '/order',
             data: {
                 'data': 'CONFIRMED', 
-                'orderID': parseInt(buttonIdSlise), 
+                'orderID': data[0],
                 'userID': data[2],
                 'strength': data[3],
                 'flavour': data[4],

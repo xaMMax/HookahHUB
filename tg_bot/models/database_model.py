@@ -49,16 +49,51 @@ class Database:
                   second_taste_choice: str, third_taste_choice: str):
         sql = """
         INSERT INTO
-        
+
         orders_table(name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, third_taste_choice) 
-        
+
         VALUES(?, ?, ?, ?, ?, ?);
         """
         parameters = (name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, third_taste_choice)
         self.execute(sql, parameters=parameters, commit=True)
 
-    def select_all_orders(self):
-        sql = "SELECT * FROM orders_table;"
+    def create_table_old_orders(self):
+        try:
+            sql = """
+            CREATE TABLE create_table_old_orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id varchar(255) NOT NULL,
+            name varchar(255) NOT NULL,
+            order_name varchar(255) NOT NULL,
+            smoke_strength_choice varchar(255) NOT NULL,
+            taste_choice varchar(255) NOT NULL,
+            second_taste_choice varchar(255) NOT NULL,
+            third_taste_choice varchar(255) NOT NULL,
+            confirmed BOOLEAN NOT NULL,
+            deleted BOOLEAN NOT NULL
+            ); 
+            """
+            self.execute(sql, commit=True)
+        except Exception as e:
+            print(e, "in create_table_old_orders")
+            pass
+
+    def add_old_order(self, order_id: str,  name: str, order_name: str, smoke_strength_choice: str, taste_choice: str,
+                  second_taste_choice: str, third_taste_choice: str, confirmed: bool, deleted: bool):
+        sql = """
+        INSERT INTO
+
+        create_table_old_orders(order_id, name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, third_taste_choice,
+        confirmed, deleted) 
+
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """
+        parameters = (order_id, name, order_name, smoke_strength_choice, taste_choice, second_taste_choice,
+                      third_taste_choice, confirmed, deleted)
+        self.execute(sql, parameters=parameters, commit=True)
+
+    def select_all_orders(self, table_name: str):
+        sql = f"SELECT * FROM {table_name};"
         return self.execute(sql, fetchall=True)
 
     def insert_into(self, column, value):
@@ -82,9 +117,10 @@ class Database:
     def count_orders(self):
         return self.execute("SELECT COUNT(*) FROM orders_table;", fetchone=True)
 
-    # def delete_order(self, **kwargs):
-    #     sql = ""
-    #     return self.execute()
+    def delete_order(self, id: int, table):
+        sql = f"DELETE FROM {table} WHERE id={id};"
+        print(f'order id: {id} was deleted from {table}')
+        return self.execute(sql, commit=True)
 
 
 def logger(statement):

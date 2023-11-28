@@ -51,24 +51,60 @@ async def get_data_from_buttons():
         if data['data'] == 'CONFIRMED':
             await send_message_to_user(data)
             return 'ok'
-        else:
+        elif data['data'] == 'DELETED':
+            try:
+                db.create_table_old_orders()
+                print('try to add order to old datatable')
+                db.add_old_order(
+                    order_id=data['orderID'],
+                    name=data['userID'],
+                    order_name='order# ' + data['orderID'],
+                    smoke_strength_choice=data['strength'],
+                    taste_choice=data['flavour'],
+                    second_taste_choice=data['flavour1'],
+                    third_taste_choice=data['flavour2'],
+                    confirmed=True,
+                    deleted=True
+                )
+                print('order was add to old datatable')
+                db.delete_order(data['orderID'], 'orders_table')
+                print('Order was deleted')
+            except Exception as e:
+                print(e, "exception")
             return 'ok'
     return 'ok'
 
 
-@app.route('/order-test', methods=['GET', 'POST'])
-def build_orders():
-    return render_template('order_test.html')
+@app.route('/old_order', methods=['GET', 'POST'])
+def old_order():
+    try:
+        return render_template('old_order.html')
+    except Exception as e:
+        # e holds description of the error
+        error_text = "<p>The error:<br>" + str(e) + "</p>"
+        hed = '<h1>Something is broken.</h1>'
+        return hed + error_text
 
 
 @app.route('/api/get_orders', methods=['GET'])
 def get_orders():
     try:
-        orders = db.select_all_orders()
+        orders = db.select_all_orders('orders_table')
         return orders
     except Exception as e:
         # e holds description of the error
         "<p>The error:<br>" + str(e) + "</p>"
+
+
+@app.route('/api/get_old_orders', methods=['GET'])
+def get_old_orders():
+    try:
+        orders = db.select_all_orders('create_table_old_orders')
+        return orders
+    except Exception as e:
+        # e holds description of the error
+        "<p>The error:<br>" + str(e) + "</p>"
+
 
 
 # @app.route('/postmethod', methods=['POST'])
