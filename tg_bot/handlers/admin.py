@@ -25,13 +25,13 @@ async def menu_callback(call: types.CallbackQuery):
 
 def register_menu_callback_admin(dp: Dispatcher):
     dp.register_callback_query_handler(menu_callback,
-                                       strength_callback.filter(grade="light"),
+                                       strength_callback.filter(data="Легкий"),
                                        state=None, is_admin=True)
     dp.register_callback_query_handler(menu_callback,
-                                       strength_callback.filter(grade="medium"),
+                                       strength_callback.filter(data="Середній"),
                                        state=None, is_admin=True)
     dp.register_callback_query_handler(menu_callback,
-                                       strength_callback.filter(grade="hard"),
+                                       strength_callback.filter(data="Міцний"),
                                        state=None, is_admin=True)
 
 
@@ -43,5 +43,5 @@ async def taste_menu_callback(call: types.CallbackQuery):
 
 def register_taste_menu_callback_admin(dp: Dispatcher):
     dp.register_callback_query_handler(taste_menu_callback,
-                                       strength_callback.filter(grade="fresh"),
+                                       strength_callback.filter(data="fresh"),
                                        state=None, is_admin=True)

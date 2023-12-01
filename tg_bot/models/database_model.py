@@ -37,7 +37,9 @@ class Database:
             smoke_strength_choice varchar(255) NOT NULL,
             taste_choice varchar(255) NOT NULL,
             second_taste_choice varchar(255) NOT NULL,
-            third_taste_choice varchar(255) NOT NULL
+            third_taste_choice varchar(255) NOT NULL,
+            chatID varchar(255) NOT NULL,
+            sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
             ); 
             """
             self.execute(sql, commit=True)
@@ -46,15 +48,17 @@ class Database:
             pass
 
     def add_order(self, name: str, order_name: str, smoke_strength_choice: str, taste_choice: str,
-                  second_taste_choice: str, third_taste_choice: str):
+                  second_taste_choice: str, third_taste_choice: str, chatID: str):
         sql = """
         INSERT INTO
 
-        orders_table(name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, third_taste_choice) 
+        orders_table(name, order_name, smoke_strength_choice, 
+                    taste_choice, second_taste_choice, third_taste_choice, chatID) 
 
-        VALUES(?, ?, ?, ?, ?, ?);
+        VALUES(?, ?, ?, ?, ?, ?, ?);
         """
-        parameters = (name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, third_taste_choice)
+        parameters = (name, order_name, smoke_strength_choice, taste_choice,
+                      second_taste_choice, third_taste_choice, chatID)
         self.execute(sql, parameters=parameters, commit=True)
 
     def create_table_old_orders(self):
@@ -78,12 +82,13 @@ class Database:
             print(e, "in create_table_old_orders")
             pass
 
-    def add_old_order(self, order_id: str,  name: str, order_name: str, smoke_strength_choice: str, taste_choice: str,
-                  second_taste_choice: str, third_taste_choice: str, confirmed: bool, deleted: bool):
+    def add_old_order(self, order_id: str, name: str, order_name: str, smoke_strength_choice: str, taste_choice: str,
+                      second_taste_choice: str, third_taste_choice: str, confirmed: bool, deleted: bool):
         sql = """
         INSERT INTO
 
-        create_table_old_orders(order_id, name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, third_taste_choice,
+        create_table_old_orders(order_id, name, order_name, smoke_strength_choice, taste_choice, second_taste_choice, 
+        third_taste_choice,
         confirmed, deleted) 
 
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
