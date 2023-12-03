@@ -106,13 +106,10 @@ def get_old_orders():
         "<p>The error:<br>" + str(e) + "</p>"
 
 
-
-# @app.route('/postmethod', methods=['POST'])
-# def get_post_js_data():
-#     jsdata = request.form['javascript_data']
-#     print(str(jsdata))
+def main():
+    app.run(debug=True)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()
 

@@ -1,7 +1,5 @@
 from aiogram.dispatcher.filters import BoundFilter
 
-from tg_bot.config import Config
-
 
 class MenuOne(BoundFilter):
     # key = 'is_admin'
